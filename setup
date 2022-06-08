@@ -1,0 +1,25 @@
+#!/bin/bash
+
+if ! command -v tuist &> /dev/null; then
+  curl -Ls https://install.tuist.io | bash
+fi
+
+if ls ./*.xcodeproj 1> /dev/null 2>&1; then
+  rm -rf *.xcodeproj
+fi
+
+if ls ./*.xcworkspace 1> /dev/null 2>&1; then
+  rm -rf *.xcworkspace
+fi
+
+if [ ! -d ./Sources ]; then
+  mkdir Sources
+fi
+
+if [ ! -d ./Tests ]; then
+  mkdir Tests
+fi
+
+# tuist clean dependencies
+tuist fetch
+tuist generate

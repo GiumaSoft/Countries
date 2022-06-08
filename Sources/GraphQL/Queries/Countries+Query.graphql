@@ -1,0 +1,13 @@
+query Countries {
+  countries(
+    filter: {
+      continent: {
+        ne: ""
+      }
+    }
+  ) {
+    code
+    name
+    emoji
+  }
+}
