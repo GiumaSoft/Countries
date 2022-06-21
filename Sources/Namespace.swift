@@ -43,6 +43,9 @@ enum Org {
   ///
   /// All UI components and related View, ViewModel and LocalState SHOULD be placed here.
   enum UI {
+    /// Alert container.
+    enum Alert {
+    }
     /// Countries container.
     enum Countries {
       /// Country container.
@@ -50,5 +53,4 @@ enum Org {
       }
     }
   }
-
 }

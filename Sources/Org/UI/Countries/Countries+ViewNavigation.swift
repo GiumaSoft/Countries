@@ -10,10 +10,13 @@ extension Org.UI.Countries.View {
     
     @Binding var destination: NavigationDestination?
     
+    @Binding var errorMessage: String?
+    
     @ViewBuilder let content: Content
     
     var body: some SwiftUI.View {
       ZStack {
+        
         if let destination = destination {
           switch destination.present {
           case .show:
@@ -34,6 +37,17 @@ extension Org.UI.Countries.View {
 
         content
           .navigationTitle(Text("Country"))
+        
+        If(errorMessage) { message in
+          Org.UI.Alert.View(
+            state: .init(
+              message: message
+            )
+          )
+          .onTapGesture {
+            errorMessage = nil
+          }
+        }
       }
     }
   }
@@ -45,11 +59,15 @@ struct TutorialContentNavigation_Previews:
   
   @State static var previewSelection: Org.Routing.NavigationDestination?
   
+  @State static var errorMessage: String? = "Hello this is an error"
+  
   static var previews: some View {
     NavigationView {
       Org.UI.Countries.View.Navigation(
         isActive: $isActive,
-        destination: $previewSelection) {
+        destination: $previewSelection,
+        errorMessage: $errorMessage
+      ) {
           Text("Hello, world!")
         }
     }

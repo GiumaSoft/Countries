@@ -2,24 +2,31 @@
 
 if ! command -v tuist &> /dev/null; then
   curl -Ls https://install.tuist.io | bash
-fi
-
-if ls ./*.xcodeproj 1> /dev/null 2>&1; then
-  rm -rf *.xcodeproj
+  tuist update
 fi
 
 if ls ./*.xcworkspace 1> /dev/null 2>&1; then
   rm -rf *.xcworkspace
 fi
 
-if [ ! -d ./Sources ]; then
-  mkdir Sources
+if ls ./*.xcodeproj 1> /dev/null 2>&1; then
+  rm -rf *.xcodeproj
 fi
 
-if [ ! -d ./Tests ]; then
-  mkdir Tests
-fi
+case $1 in
+  "--edit")
+    tuist edit
+    ;;
 
-# tuist clean dependencies
-tuist fetch
-tuist generate
+  "--reset" | "--clean")
+    ;;
+
+  "--reset-deps" | "--clean-deps")
+    tuist clean dependencies
+    ;;
+
+  *)
+    tuist fetch
+    tuist generate
+    ;;
+esac

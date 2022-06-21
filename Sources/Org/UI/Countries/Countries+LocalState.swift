@@ -10,6 +10,8 @@ extension Org.UI.Countries {
     var isActive: Bool
     /// The navigation destination.
     var destination: Org.Routing.NavigationDestination?
+    /// The navigation error.
+    var errorMessage: String?
   }
 }
 

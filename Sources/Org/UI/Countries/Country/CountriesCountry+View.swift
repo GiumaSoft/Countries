@@ -72,7 +72,7 @@ extension Org.UI.Countries.Country {
 
 
 struct CountriesCountryView_Previews: PreviewProvider {
-    static var previews: some View {
+  static var previews: some SwiftUI.View {
       NavigationView {
         Org.UI.Countries.Country.View(
           state: .init(

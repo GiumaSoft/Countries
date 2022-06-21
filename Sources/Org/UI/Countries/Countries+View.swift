@@ -7,9 +7,19 @@ extension Org.UI.Countries {
     @State var state: LocalState
     
     var body: some SwiftUI.View {
-      Navigation(isActive: $state.isActive, destination: $state.destination) {
-        List(state.countries, id: \.self) { country in
-          VStack(alignment: .leading, spacing: 0) {
+      Navigation(
+        isActive: $state.isActive,
+        destination: $state.destination,
+        errorMessage: $state.errorMessage
+      ) {
+        List(
+          state.countries,
+          id: \.self
+        ) { country in
+          VStack(
+            alignment: .leading,
+            spacing: 0
+          ) {
             HStack {
               Text(country.emoji)
                 .modifier(Modifier.MediumEmoji())
@@ -17,12 +27,15 @@ extension Org.UI.Countries {
             }
             .onTapGesture {
               Task {
-                state.destination = .country(
-                  try await ViewModel.fetchCountry(
-                    withCode: country.code
-                  )
-                )
-                state.isActive = true
+                await ViewModel.fetchCountry(
+                  withCode: country.code) { country in
+                    state.destination = .country(
+                      country
+                    )
+                    state.isActive = true
+                  } onError: { error in
+                    state.errorMessage = error.localizedDescription
+                  }
               }
             }
             
@@ -33,7 +46,9 @@ extension Org.UI.Countries {
         }
         .onAppear {
           Task {
-            state.countries = try await ViewModel.fetchCountries()
+            state.countries = await ViewModel.fetchCountries { error in
+              state.errorMessage = error.localizedDescription
+            }
           }
         }
       }
